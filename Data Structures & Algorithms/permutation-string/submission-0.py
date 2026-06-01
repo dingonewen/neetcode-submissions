@@ -1,0 +1,21 @@
+class Solution:
+    def checkInclusion(self, s1: str, s2: str) -> bool:
+        if len(s1) > len(s2):
+            return False
+        count_s1 = Counter(s1)
+        window = Counter(s2[:len(s1)])
+
+        if window == count_s1:
+            return True
+        
+        for i in range(len(s1), len(s2)):
+            window[s2[i]] += 1   # move the window to the right by 1 index
+            window[s2[i - len(s1)]] -= 1
+
+            if window[s2[i - len(s1)]] == 0:
+                del window[s2[i - len(s1)]]   # when compare Counter() keys has to be the same
+
+            if window == count_s1:
+                return True
+                
+        return False
